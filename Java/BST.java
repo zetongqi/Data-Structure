@@ -1,197 +1,145 @@
-class BSTnode <K>
+import java.util.*;
+
+public class BST
 {
-	private K key;
-	private BSTnode<K> left, right;
+	private BSTnode root;
 
-	/********************************** constructor **********************************/
-	public BSTnode(K key, BSTnode<K> left, BSTnode<K> right)
-	{
-		this.key = key;
-		this.left = left;
-		this.right = right;
-	}
-
-	/********************************** functions **********************************/
-	public BSTnode<K> get_left()
-	{
-		return this.left;
-	}
-
-	public BSTnode<K> get_right()
-	{
-		return this.right;
-	}
-
-	public K get_key()
-	{
-		return this.key;
-	}
-
-	public void set_key(K new_key)
-	{
-		this.key = new_key;
-	}
-
-	public void set_left(BSTnode<K> new_left)
-	{
-		this.left = new_left;
-	}
-
-	public void set_right(BSTnode<K> new_right)
-	{
-		this.right = new_right;
-	}
-
-}
-
-
-class BST<K extends Comparable<K>>
-{
-	private BSTnode<K> root;
-
-	/* constructor */
 	public BST()
 	{
 		this.root = null;
 	}
 
+	public void setRoot(BSTnode root)
+	{
+		this.root = root;
+	}
 
-	/********************************** insert function **********************************/
-	private BSTnode<K> insert(BSTnode<K> node, K key)
+	private BSTnode Insert(BSTnode node, int val)
 	{
 		if (node == null)
 		{
-			return new BSTnode<K> (key, null, null);
+			return new BSTnode(val);
 		}
-
-		if (key.compareTo(node.get_key()) < 0)
+		if (val <= node.getKey())
 		{
-			node.set_left(insert(node.get_left(), key));
+			node.setLeft(this.Insert(node.getLeft(), val));
 			return node;
 		}
 		else
 		{
-			node.set_right(insert(node.get_right(), key));
+			node.setRight(this.Insert(node.getRight(), val));
 			return node;
 		}
 	}
 
-	public void insert(K key)
+	public void Insert(int val)
 	{
-		this.root = insert(this.root, key);
+		this.Insert(this.root, val);
 	}
 
-
-	/********************************** see if a key is in a tree **********************************/
-	private boolean look_up(BSTnode<K> node, K key)
+	public BSTnode findSmallest(BSTnode node)
 	{
-		if (node == null)
+		if (node.getLeft() == null)
 		{
-			return false;
+			return node;
 		}
-
-		if (node.get_key().equals(key))
-		{
-        	return true;
-    	}
-
-		if (key.compareTo(node.get_key()) < 0)
-		{
-			return look_up(node.get_left(), key);
-		}
-
 		else
 		{
-			return look_up(node.get_right(), key);
+			return findSmallest(node.getLeft());
 		}
 	}
 
-	public boolean look_up(K key)
-	{
-		return this.look_up(this.root, key);
-	}
-
-	public BSTnode<K> smallest(BSTnode<K> node)
-	{
-		if (node.get_left() == null)
-		{
-			return node;
-		}
-
-		return smallest(node.get_left());
-	}
-	/********************************** delete **********************************/
-	private BSTnode<K> delete(BSTnode<K> node, K key)
+	private BSTnode Delete(BSTnode node, int val)
 	{
 		if (node == null)
 		{
 			return null;
 		}
 
-		if (node.get_key().equals(key))
+		if (val == node.getKey())
 		{
-			if (node.get_left() == null && node.get_right() == null)
+			if (node.getRight() == null && node.getLeft() == null)
 			{
 				return null;
 			}
 
-			if (node.get_left() == null && node.get_right() != null)
+			if (node.getRight() == null)
 			{
-				return node.get_right();
+				return node.getLeft();
 			}
 
-			if (node.get_left() != null && node.get_right() == null)
+			if (node.getLeft() == null)
 			{
-				return node.get_left();
+				return node.getRight();
 			}
 
-			BSTnode<K> smallest_node = smallest(node);
-			node.set_key(smallest_node.get_key());
-			node.set_right(delete(node.get_right(), smallest_node.get_key()));
+			node.setKey(findSmallest(node.getRight()).getKey());
+			node.setRight(Delete(node.getRight(), node.getKey()));
 			return node;
 		}
 
-		if (key.compareTo(node.get_key()) < 0)
+		else if (val <= node.getKey())
 		{
-			node.set_left(delete(node.get_left(), key));
+			node.setLeft(Delete(node.getLeft(), val));
 			return node;
 		}
 
 		else
 		{
-			node.set_right(delete(node.get_right(), key));
+			node.setRight(Delete(node.getRight(), val));
 			return node;
 		}
 	}
 
-	public void delete(K key)
+	public void Delete(int val)
 	{
-		delete(this.root, key);
+		Delete(this.root, val);
 	}
-	
+
+	public BSTnode Search(BSTnode node, int val)
+	{
+		if (node.getKey() == val || node == null)
+		{
+			return node;
+		}
+
+		if (val <= node.getKey())
+		{
+			return Search(node.getLeft(), val);
+		}
+
+		else
+		{
+			return Search(node.getRight(), val);
+		}
+	}
+
+	public Boolean Search(int val)
+	{
+		if (Search(this.root, val) != null)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	private void Print(BSTnode node)
+	{
+		if (node == null)
+		{
+			return;
+		}
+		Print(node.getLeft());
+		System.out.println(node.getKey());
+		Print(node.getRight());
+	}
+
+	public void Print()
+	{
+		Print(this.root);
+	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
