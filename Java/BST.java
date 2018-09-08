@@ -96,11 +96,16 @@ public class BST
 		Delete(this.root, val);
 	}
 
-	public BSTnode Search(BSTnode node, int val)
+	public boolean Search(BSTnode node, int val)
 	{
-		if (node.getKey() == val || node == null)
+		if (node == null)
 		{
-			return node;
+			return false;
+		}
+
+		if (val == node.getKey())
+		{
+			return true;
 		}
 
 		if (val <= node.getKey())
@@ -116,14 +121,7 @@ public class BST
 
 	public Boolean Search(int val)
 	{
-		if (Search(this.root, val) != null)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return Search(this.root, val);
 	}
 
 	private void Print(BSTnode node)
