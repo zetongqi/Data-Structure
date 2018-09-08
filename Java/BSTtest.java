@@ -14,9 +14,13 @@ public class BSTtest
 		bt.Insert(7);
 		bt.Insert(9);
 		bt.Print();
-		if (bt.Search(5))
+		bt.Delete(9);
+		bt.Print();
+		if (bt.Search(9))
 			System.out.println("found!");
 		else
 			System.out.println("not found!");
+		System.out.println(bt.getMax().getKey());
+		System.out.println(bt.getMin().getKey());
 	}
 }

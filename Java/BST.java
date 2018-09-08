@@ -37,7 +37,7 @@ public class BST
 		this.Insert(this.root, val);
 	}
 
-	public BSTnode findSmallest(BSTnode node)
+	private BSTnode findSmallest(BSTnode node)
 	{
 		if (node.getLeft() == null)
 		{
@@ -138,6 +138,36 @@ public class BST
 	public void Print()
 	{
 		Print(this.root);
+	}
+
+	private BSTnode getMax(BSTnode node)
+	{
+		if (node.getRight() == null)
+		{
+			return node;
+		}
+		else
+			return getMax(node.getRight());
+	}
+
+	public BSTnode getMax()
+	{
+		return getMax(this.root);
+	}
+
+	private BSTnode getMin(BSTnode node)
+	{
+		if (node.getLeft() == null)
+		{
+			return node;
+		}
+		else
+			return getMin(node.getLeft());
+	}
+
+	public BSTnode getMin()
+	{
+		return getMin(this.root);
 	}
 
 }
