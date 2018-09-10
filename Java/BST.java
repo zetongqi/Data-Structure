@@ -170,4 +170,65 @@ public class BST
 		return getMin(this.root);
 	}
 
+	private int getHeight(BSTnode node, int leftHeight, int rightHeight)
+	{
+		if (node == null)
+		{
+			return 0;
+		}
+		else
+		{
+			leftHeight = getHeight(node.getLeft(), leftHeight, rightHeight);
+			rightHeight = getHeight(node.getRight(), leftHeight, rightHeight);
+			leftHeight++;
+			rightHeight++;
+			if (rightHeight >= leftHeight)
+				return rightHeight;
+			else
+				return leftHeight;
+		}
+	}
+
+	public int getHeight()
+	{
+		return getHeight(this.root, 0, 0);
+	}
+
+	public void rightRotate(BSTnode node)
+	{
+		BSTnode tempT3 = node.getRight();
+		node.setRight(node.getLeft());
+		int tempNodeKey = node.getKey();
+		node.setKey(node.getRight().getKey());
+		node.getRight().setKey(tempNodeKey);
+		node.setLeft(node.getRight().getLeft());
+		node.getRight().setLeft(node.getRight().getRight());
+		node.getRight().setRight(tempT3);
+	}
+
+	public void leftRotate(BSTnode node)
+	{
+		BSTnode tempT1 = node.getLeft();
+		node.setLeft(node.getRight());
+		int tempNodeKey = node.getKey();
+		node.setKey(node.getLeft().getKey());
+		node.getLeft().setKey(tempNodeKey);
+		node.setRight(node.getLeft().getRight());
+		node.getLeft().setRight(node.getLeft().getLeft());
+		node.getLeft().setLeft(tempT1);
+	}
+
+	public BSTnode find_Unbalanced_Node(BSTnode node)
+	{
+		while (node.getParent() != null)
+		{
+			node = node.getParent();
+			int rightHeight = getHeight(node.getRight(), 0, 0);
+			int leftHeight = getHeight(node.getLeft(), 0, 0);
+			if (java.lang.Math.abs(rightHeight-leftHeight) > 1)
+				return node;
+		}
+		return null;
+	}
+
 }
