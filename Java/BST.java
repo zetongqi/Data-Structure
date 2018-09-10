@@ -14,27 +14,27 @@ public class BST
 		this.root = root;
 	}
 
-	private BSTnode Insert(BSTnode node, int val)
+	private BSTnode Insert(BSTnode node, BSTnode n)
 	{
 		if (node == null)
 		{
-			return new BSTnode(val);
+			return n;
 		}
-		if (val <= node.getKey())
+		if (n.getKey() <= node.getKey())
 		{
-			node.setLeft(this.Insert(node.getLeft(), val));
+			node.setLeft(this.Insert(node.getLeft(), n));
 			return node;
 		}
 		else
 		{
-			node.setRight(this.Insert(node.getRight(), val));
+			node.setRight(this.Insert(node.getRight(), n));
 			return node;
 		}
 	}
 
-	public void Insert(int val)
+	public void Insert(BSTnode n)
 	{
-		this.Insert(this.root, val);
+		this.Insert(this.root, n);
 	}
 
 	private BSTnode findSmallest(BSTnode node)
@@ -229,6 +229,62 @@ public class BST
 				return node;
 		}
 		return null;
+	}
+
+	public ArrayList<BSTnode> findPath(BSTnode top, BSTnode down)
+	{
+		ArrayList<BSTnode> nodeList = new ArrayList<BSTnode>();
+		BSTnode pointer = down.clone();
+		while (pointer != top)
+		{
+			nodeList.add(pointer);
+			pointer = pointer.getParent();
+		}
+		return nodeList;
+	}
+
+	//problem here, always return 0
+	public int findRelation(BSTnode parent, BSTnode child)
+	{
+		if (parent.getRight() != null)
+		{	
+			if (parent.getRight() == child)
+				return 1;
+		}
+		if(parent.getLeft() != null)
+			if (parent.getLeft() == child)
+				return 2;
+		return 0;
+	}
+
+	public void AVL_Insert(BSTnode node)
+	{
+		this.Insert(node);
+		BSTnode unbalanced = this.find_Unbalanced_Node(node);
+		if (unbalanced == null)
+			return;
+		ArrayList<BSTnode> connection = this.findPath(unbalanced, node);
+		for (int i = 0; i < connection.size(); i++)
+		{
+			System.out.println(connection.get(i).getKey());
+		}
+		int firstRelation = this.findRelation(unbalanced, connection.get(0));
+		int secondRelation = this.findRelation(connection.get(0), connection.get(1));
+		System.out.println("relation"+firstRelation + secondRelation);
+		if (firstRelation == 2 && secondRelation == 2)
+			this.rightRotate(unbalanced);
+		if (firstRelation == 2 && secondRelation == 1)
+		{
+			this.leftRotate(connection.get(0));
+			this.rightRotate(unbalanced);
+		}
+		if (firstRelation == 1 && secondRelation == 2)
+		{
+			this.rightRotate(connection.get(0));
+			this.leftRotate(unbalanced);
+		}
+		if (firstRelation == 1 && secondRelation == 1)
+			this.leftRotate(unbalanced);
 	}
 
 }
