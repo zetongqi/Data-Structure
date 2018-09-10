@@ -14,6 +14,11 @@ public class BST
 		this.root = root;
 	}
 
+	public BSTnode getRoot()
+	{
+		return this.root;
+	}
+
 	private BSTnode Insert(BSTnode node, BSTnode n)
 	{
 		if (node == null)
@@ -234,16 +239,16 @@ public class BST
 	public ArrayList<BSTnode> findPath(BSTnode top, BSTnode down)
 	{
 		ArrayList<BSTnode> nodeList = new ArrayList<BSTnode>();
-		BSTnode pointer = down.clone();
+		BSTnode pointer = down;
 		while (pointer != top)
 		{
 			nodeList.add(pointer);
 			pointer = pointer.getParent();
 		}
+		Collections.reverse(nodeList);
 		return nodeList;
 	}
 
-	//problem here, always return 0
 	public int findRelation(BSTnode parent, BSTnode child)
 	{
 		if (parent.getRight() != null)
@@ -264,13 +269,12 @@ public class BST
 		if (unbalanced == null)
 			return;
 		ArrayList<BSTnode> connection = this.findPath(unbalanced, node);
-		for (int i = 0; i < connection.size(); i++)
+		/*for (int i = 0; i < connection.size(); i++)
 		{
 			System.out.println(connection.get(i).getKey());
-		}
+		}*/
 		int firstRelation = this.findRelation(unbalanced, connection.get(0));
 		int secondRelation = this.findRelation(connection.get(0), connection.get(1));
-		System.out.println("relation"+firstRelation + secondRelation);
 		if (firstRelation == 2 && secondRelation == 2)
 			this.rightRotate(unbalanced);
 		if (firstRelation == 2 && secondRelation == 1)

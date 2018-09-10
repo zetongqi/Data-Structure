@@ -35,13 +35,13 @@ public class BSTtest
 		bt.Insert(b7);
 		bt.Insert(b9);
 		bt.Insert(b10);*/
-		System.out.println(bt.getHeight());
+		System.out.println(bt.getRoot().getKey());
 		//bt.leftRotate(b6);
-		//bt.Print();
+		bt.Print();
 		//System.out.println(bt.find_Unbalanced_Node(b9).getKey());
 		//ArrayList<BSTnode> al = bt.findPath(b3, b10);
 		//for (int i = 0; i < al.size(); i++)
 		//	System.out.println(al.get(i).getKey());
-		System.out.println(bt.getHeight());
+		//System.out.println("relation"+bt.findRelation(b6, b4));
 	}
 }
